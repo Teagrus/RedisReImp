@@ -41,13 +41,9 @@ RESPSolver::RESPData sendMessage(std::string serverAdress, int port) {
 
     const char *hello = "*1\r\n$7\r\nCOMMAND\r\n";
     send(sock, hello, strlen(hello), 0);
-    std::cout << "SENT: " << hello << std::endl;
+    //deleted std::cout << "SENT: " << hello << std::endl;
 
     // 接收服务器的响应
-    
-    
-
-
     int resultStatus = 0;
     int loopcount = 0;
     int valReadMax = 0;
@@ -56,22 +52,22 @@ RESPSolver::RESPData sendMessage(std::string serverAdress, int port) {
     {   
         loopcount ++;
         int valread = read(sock, buffer, 1024);
-        std::cout << "RECEIVED Data: " << buffer << std::endl;
-        std::cout << "RECEIVED: " << valread << "Bytes" << std::endl;
+        //deleted std::cout << "RECEIVED Data: " << buffer << std::endl;
+        //deleted std::cout << "RECEIVED: " << valread << "Bytes" << std::endl;
         receivedStr += buffer;
         if (valReadMax < valread) {
             valReadMax = valread;
         }
         data = RESPSolver::RESPData::checkData(receivedStr, 0, &resultStatus);
         if (data.isValidDataType()) {
-            std::cout << "All Data Loaded\n"; 
+            //deleted std::cout << "All Data Loaded\n"; 
             
             break;
         } else {
-            std::cout << valReadMax << std::endl;
-            std::cout << "Loop count " << loopcount << std::endl;  
-            std::cout << "StrSize " << receivedStr.size() << std::endl;  
-            std::cout << "Data not all loaded - wait for new data\n";  
+            //deleted std::cout << valReadMax << std::endl;
+            //deleted std::cout << "Loop count " << loopcount << std::endl;  
+            //deleted std::cout << "StrSize " << receivedStr.size() << std::endl;  
+            //deleted std::cout << "Data not all loaded - wait for new data\n";  
         }
     }
 
@@ -87,17 +83,17 @@ int main() {
     std::string address = "192.168.1.103";
     std::string portStr = "6379";
 
-    // std::cout << "Input official Redis Server Adress: ";
-    // std::cin >> address;
+    //deleted std::cout << "Input official Redis Server Adress: ";
+    std::cin >> address;
 
-    // std::cout << "Input Port: ";
-    // std::cin >> portStr;
+    //deleted std::cout << "Input Port: ";
+    std::cin >> portStr;
     int port = 6379;
     if (portStr.size() > 0) {
         port = std::stoi(portStr);
     }
 
-    std::cout << "\nUse " + address + ":" + std::to_string(port) + "\n";
+    //deleted std::cout << "\nUse " + address + ":" + std::to_string(port) + "\n";
     auto result = sendMessage(address, port);
 
     std::ofstream file("./commands.resp");

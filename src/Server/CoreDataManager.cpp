@@ -16,15 +16,15 @@ namespace RedisReImp::Server {
 // }; 
 
 
-std::unordered_map<std::string, std::string>& CoreDataManager::getStringMap() {
+std::map<std::string, std::string>& CoreDataManager::getStringMap() {
     return stringMap;
 }
 
-std::unordered_map<std::string, std::unordered_map<std::string, std::string>>& CoreDataManager::getHashmapMap() {
+std::map<std::string, std::map<std::string, std::string>>& CoreDataManager::getHashmapMap() {
     return hashmapMap;
 };
 
-std::unordered_map<std::string, std::deque<std::string>> & CoreDataManager::getListMap() {
+std::map<std::string, std::deque<std::string>>& CoreDataManager::getListMap() {
     return listMap;
 }
 
@@ -36,7 +36,7 @@ void CoreDataSingleton::initCoreData() {
 
 CoreDataManager &  CoreDataSingleton::getInstance() {
     if (!coreData.inited) {
-        initCoreData;
+        initCoreData();
     }
     return coreData;
 };

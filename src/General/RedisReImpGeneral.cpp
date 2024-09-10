@@ -8,14 +8,14 @@ namespace RedisReImp::General  {
 Configs GlobalConfig::configs;
 
 void GlobalConfig::initConfig() {
-    static const std::string CONFIG_PATH = "./Config.ini";
+    static const std::string CONFIG_PATH = "../config.ini";
     INIReader reader(CONFIG_PATH);
 
     if (reader.ParseError() < 0) {
-        std::cout << "Can't load 'Config.ini'\nUSE DEFAULT SETTINGS!!\n";
+        //deleted std::cout << "Can't load 'Config.ini'\nUSE DEFAULT SETTINGS!!\n";
         configs.inited = true;
     } else{
-        std::cout << "Use settings from 'Config.ini'\n";
+        //deleted std::cout << "Use settings from 'Config.ini'\n";
         configs.inited = true;
         // Network
         configs.port = reader.GetInteger("Network", "port", configs.port);
@@ -39,7 +39,7 @@ const Configs & GlobalConfig::getInstance() {
 
 
 void ClassRegistry::registerClass(const std::string& className, std::function<std::shared_ptr<Reflectable>()> constructor) {
-    std::cout << "RegisterClass - " << className << std::endl;
+    //deleted std::cout << "RegisterClass - " << className << std::endl;
     getRegistry()[className] = constructor;
 };
 
@@ -63,6 +63,17 @@ void toUpper(std::string& targetStr) {
 
 void toLower(std::string& targetStr) {
     std::transform(targetStr.begin(), targetStr.end(), targetStr.begin(), [](unsigned char c) { return std::tolower(c); });
+}
+
+// time count
+uint64_t GetSysTimestamp_ns() {
+    struct timespec timer_nsec;
+    uint64_t timestamp_ns = 0;
+    if (!clock_gettime(CLOCK_REALTIME, &timer_nsec)) {
+        timestamp_ns =
+            (uint64_t)timer_nsec.tv_sec * 1e9L + (uint64_t)timer_nsec.tv_nsec;
+    }
+    return timestamp_ns;
 }
 
 

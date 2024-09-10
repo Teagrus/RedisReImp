@@ -59,12 +59,12 @@ int sendMessage() {
     // const char *hello = "*3\r\n$3\r\nSET\r\n$7\r\ntestkey\r\n$5\r\nhello\r\n";
     const char *hello = "*2\r\n$3\r\nGET\r\n$7\r\ntestkey\r\n";
     send(sock, hello, strlen(hello), 0);
-    std::cout << "SENT: " << hello << std::endl;
+    //deleted std::cout << "SENT: " << hello << std::endl;
 
     // 接收服务器的响应
     int valread = read(sock, buffer, 1024);
 
-    std::cout << "RECEIVED: " << buffer << std::endl;
+    //deleted std::cout << "RECEIVED: " << buffer << std::endl;
     // 关闭套接字
     close(sock);
 
@@ -97,8 +97,8 @@ int main(){
     //     std::time_t elapsed = getMillisecondTimestamp() - now;
     //     if (elapsed > 1000) {
             
-    //         std::cout << finishedTasks << " connections finished in last second!!" << std::endl;
-    //         std::cout << "Average latency " << (latency / (float)finishedTasks) << " ms"  << std::endl << std::endl;
+    //         //deleted std::cout << finishedTasks << " connections finished in last second!!" << std::endl;
+    //         //deleted std::cout << "Average latency " << (latency / (float)finishedTasks) << " ms"  << std::endl << std::endl;
     //         finishedTasks = 0;
     //         latency = 0;
 

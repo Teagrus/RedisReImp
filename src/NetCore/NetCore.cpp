@@ -74,8 +74,8 @@ void RedisReImp::NetCore::EpollServer::sBind() {
         perror("epoll_create1()");
     }
     
-    std::cout << "epollFD: "<< epollFD << std::endl;
-    std::cout << "serverFD: "<< serverFD << std::endl;
+    //deleted std::cout << "epollFD: "<< epollFD << std::endl;
+    //deleted std::cout << "serverFD: "<< serverFD << std::endl;
     // register server sock to epoll
     memset(&event, 0, sizeof(event));
     event.data.fd = serverFD;
@@ -99,7 +99,7 @@ bool RedisReImp::NetCore::EpollServer::sEventLoop(
         return 1;
     }
 
-    std::cout << "nevents: "<< nevents << std::endl;
+    //deleted std::cout << "nevents: "<< nevents << std::endl;
     for (int i = 0; i < nevents; i++) {
         
         if ((events[i].events & EPOLLERR) || (events[i].events & EPOLLHUP) ||
@@ -108,22 +108,28 @@ bool RedisReImp::NetCore::EpollServer::sEventLoop(
             // if EPOLLHUP
             if ((events[i].events & EPOLLHUP)) {
                 
-                std::cout << "Connection Closed! fd: " << clientFD << std::endl;
+                //deleted std::cout << "Connection Closed! fd: " << clientFD << std::endl;
             }else {
                 // error case
                 fprintf(stderr, "epoll error\n");
             }
+
+            // std::cout << "IS True EpollERR? " << (events[i].events & EPOLLHUP);
             // delete event
-            eventMapper.erase(clientFD);
-            close(events[i].data.fd);
-            continue;
+
+            if ((events[i].events & EPOLLERR) || (events[i].events & EPOLLHUP)) {
+                eventMapper.erase(clientFD);
+                close(events[i].data.fd);
+                continue;
+            }
+            
         } else if (events[i].data.fd == serverFD) {
             // server socket; call accept as many times as we can - bacause we are using non blocking mode
             while (true) {
                 struct sockaddr in_addr;
                 socklen_t in_addr_len = sizeof(in_addr);
                 int client = accept(serverFD, &in_addr, &in_addr_len);
-                std::cout << "eFD: "<< client << std::endl;
+                //deleted std::cout << "eFD: "<< client << std::endl;
                 if (client == -1) {
                     if (errno == EAGAIN || errno == EWOULDBLOCK) {
                         // we processed all of the connections
@@ -148,8 +154,8 @@ bool RedisReImp::NetCore::EpollServer::sEventLoop(
             // client socket; Create an corresponding Event
             int clientFD = events[i].data.fd;
 
-            std::cout << "eFD: "<< events[i].data.fd << std::endl;
-            std::cout << "sFD: "<< serverFD << std::endl;
+            //deleted std::cout << "eFD: "<< events[i].data.fd << std::endl;
+            //deleted std::cout << "sFD: "<< serverFD << std::endl;
             std::shared_ptr<RedisReImp::General::BaseEvent> targetEvent;
             if (eventMapper.find(clientFD) == eventMapper.end()){
                 targetEvent = std::make_shared<RedisReImp::General::BaseEvent>(clientFD);

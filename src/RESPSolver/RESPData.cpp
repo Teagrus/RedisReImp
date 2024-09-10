@@ -82,7 +82,7 @@ RESPData RESPData::checkData(std::string & strDataIn, int offset, int * resultSt
     // dataType
     char dataType = strDataIn[offset];
 
-    // std::cout << "DataType&Offset " << dataType << " " << offset << std::endl;
+    // //deleted std::cout << "DataType&Offset " << dataType << " " << offset << std::endl;
     if (!_isValidDataType(dataType)) {
         if (resultStatus != nullptr)
             *resultStatus = -1;
@@ -92,7 +92,7 @@ RESPData RESPData::checkData(std::string & strDataIn, int offset, int * resultSt
     int offsetSubContent = offset + 1;
     int offsetPr = 0;
     
-    // std::cout << "result(dataType) " << dataType << std::endl;
+    // //deleted std::cout << "result(dataType) " << dataType << std::endl;
     RESPData result(dataType);
 
     offsetPr = _searchNextPr(strDataIn, offsetSubContent);
@@ -103,7 +103,7 @@ RESPData RESPData::checkData(std::string & strDataIn, int offset, int * resultSt
         return RESPData();
     }
 
-    // std::cout << "offsetPr " << offsetPr << std::endl;
+    // //deleted std::cout << "offsetPr " << offsetPr << std::endl;
     
     
 
@@ -132,9 +132,9 @@ RESPData RESPData::checkData(std::string & strDataIn, int offset, int * resultSt
     
     if (dataType == '$') {
         std::string lengthStr = strDataIn.substr(offsetSubContent, offsetPr);
-        // std::cout << "lengthStr " << lengthStr << std::endl;
+        // //deleted std::cout << "lengthStr " << lengthStr << std::endl;
         int strLen = std::stoi(lengthStr);
-        // std::cout << "strLen " << strLen << std::endl;
+        // //deleted std::cout << "strLen " << strLen << std::endl;
         // in case of null str
         if (strLen == -1) {
             result.strData = nullptr;
@@ -150,7 +150,7 @@ RESPData RESPData::checkData(std::string & strDataIn, int offset, int * resultSt
             strDataIn.substr(offsetSubContent + offsetPr + 2,strLen)
         );
 
-        // std::cout << "result.strData " << *result.strData << std::endl;
+        // //deleted std::cout << "result.strData " << *result.strData << std::endl;
 
         if (nextPartOffset != nullptr) {
             *nextPartOffset = offsetSubContent + offsetPr + strLen + 4;
@@ -164,15 +164,15 @@ RESPData RESPData::checkData(std::string & strDataIn, int offset, int * resultSt
 
         for (size_t i = 0; i < objectNum; i++)
         {   
-            // std::cout << "Load Array content " << i << std::endl;
-            // std::cout << "offsetSubContent " << offsetSubContent << std::endl;
+            // //deleted std::cout << "Load Array content " << i << std::endl;
+            // //deleted std::cout << "offsetSubContent " << offsetSubContent << std::endl;
 
             int npOffset;
             RESPData subData = checkData(strDataIn, offsetSubContent, resultStatus, &npOffset);
-            // std::cout << "subData Type" << subData.getDataType() << std::endl;
+            // //deleted std::cout << "subData Type" << subData.getDataType() << std::endl;
 
             // err case
-            // std::cout << "IS VALID" << subData.isValidDataType() << " OFFSET " << offset << std::endl;
+            // //deleted std::cout << "IS VALID" << subData.isValidDataType() << " OFFSET " << offset << std::endl;
             if (!subData.isValidDataType()) {
                 return RESPData();
             }

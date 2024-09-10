@@ -17,7 +17,7 @@ std::unordered_map<std::string, RESPSolver::RESPData>& getCommandConfigs() {
         // load command config resp data file
         std::ifstream targetFile(commandConfigPath);
         if (!targetFile.is_open()) {
-            std::cout << "Failed to open command config file: " << commandConfigPath << std::endl;
+            //deleted std::cout << "Failed to open command config file: " << commandConfigPath << std::endl;
             exit(1);
         }
 
@@ -27,11 +27,11 @@ std::unordered_map<std::string, RESPSolver::RESPData>& getCommandConfigs() {
         targetFile.close();  
         std::string configDataStr = contents.str();
         
-        // std::cout << "Loaded Commands Data :\n" << configDataStr << std::endl;
+        // //deleted std::cout << "Loaded Commands Data :\n" << configDataStr << std::endl;
 
         RESPSolver::RESPData commandsData = RESPSolver::RESPData::checkData(configDataStr, 0);
         if (!commandsData.isValidDataType()) {
-            std::cout << "Command config path err, please check " << commandConfigPath << std::endl;
+            //deleted std::cout << "Command config path err, please check " << commandConfigPath << std::endl;
         }
 
         // resolve datas
@@ -41,7 +41,7 @@ std::unordered_map<std::string, RESPSolver::RESPData>& getCommandConfigs() {
             General::toUpper(commandStr);
             _commandConfigMap[commandStr] = command;
         }
-        std::cout << "Command data loaded!! Data from " << commandConfigPath << std::endl;
+        //deleted std::cout << "Command data loaded!! Data from " << commandConfigPath << std::endl;
     // ------------ finished init data map
     }
     
@@ -142,10 +142,10 @@ std::shared_ptr<ExecutorInterface> ExecutorsCluster::getExcutor(std::string comm
         _initExecutorCluster();
     }
     // print all commands
-    std :: cout << "ALL KEYS:\n";
-    for (auto key : executorMap) {
-        std :: cout << "|" << key.first << "|" << std::endl;
-    }
+    // std :: cout << "ALL KEYS:\n";
+    // for (auto key : executorMap) {
+    //     std :: cout << "|" << key.first << "|" << std::endl;
+    // }
 
    
     
@@ -162,8 +162,8 @@ RESPSolver::RESPData ExecutorCOMMAND::execute(RESPSolver::RESPData & input, Core
     RESPSolver::RESPData result('*');
     auto cmapper = getCommandConfigs();
     
-    for (std::string validCommand: commandList) {
-        result.setDataVecEmplace(cmapper[validCommand]);
+    for (auto p : cmapper ) {
+        result.setDataVecEmplace(cmapper[p.first]);
     }
 
     return result;

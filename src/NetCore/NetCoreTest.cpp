@@ -8,7 +8,7 @@ int main() {
     // test config
     
     const auto config = General::GlobalConfig::getInstance();
-    std::cout << "CONFIG port: " << config.port << std::endl;
+    //deleted std::cout << "CONFIG port: " << config.port << std::endl;
     NetCore::EpollServer serverObject;
     serverObject.sBind();
     while (true)
@@ -115,7 +115,7 @@ int main() {
 //         return 1;
 //     }
 
-//     std::cout << "Server started. Listening on port " << PORT << std::endl;
+//     //deleted std::cout << "Server started. Listening on port " << PORT << std::endl;
 
 //     while (true) {
 //         int numEvents = epoll_wait(epollFd, events, MAX_EVENTS, -1);
@@ -147,7 +147,7 @@ int main() {
 //             } 
 //             else {
 //                 // Handle client data
-//                 // std::cout << "Add Client task to thread pool" << std::endl;
+//                 // //deleted std::cout << "Add Client task to thread pool" << std::endl;
 //                 int clientFd = events[i].data.fd;
 //                 // ioThreadPool.enqueue([clientFd]{handleClient(clientFd); });
 //                 handleClient(clientFd);
