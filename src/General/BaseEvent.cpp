@@ -189,13 +189,16 @@ void RedisReImp::General::BaseEvent::setToFirstStage() {
 
 bool RedisReImp::General::BaseEvent::triggerEvent() {
     int tempResult = 0;
+    
     //deleted std::cout << "EventTriggered, Stage:" << stageNow <<std::endl;
     switch (stageNow)
     {
     case 1:
         tempResult = eRead();
-        if (tempResult != 1)
+        if (tempResult != 1){
             return false; // wait for following data
+        }
+            
         break;
     case 2:
         eReadDataParse();
@@ -216,7 +219,6 @@ bool RedisReImp::General::BaseEvent::triggerEvent() {
     default:
         break;
     }
-
     return true;
 }
 

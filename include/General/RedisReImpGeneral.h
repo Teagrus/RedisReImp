@@ -4,6 +4,11 @@
 #include <memory>
 #include <ini.h>
 #include <unordered_map>
+
+// using alises
+using StrPtr = std::shared_ptr<std::string>;
+using StrVecPtr = std::shared_ptr< std::vector< std::shared_ptr<std::string> > >;
+
 // namespace
 namespace RedisReImp{
 	namespace General {
@@ -21,6 +26,8 @@ namespace RedisReImp{
 	}
 
 	namespace RESPSolver {
+	}
+	namespace KVStorage {
 	}
 
 }
@@ -44,6 +51,7 @@ public:
 
 		//epoll settings
 	int epollEventsLen = 10;
+	int ioWorkerThreadNum = 0;
 	std::string commandConfigPath;
 
 	// client settings
@@ -93,20 +101,32 @@ void toLower(std::string& targetStr);
 #include <sys/time.h>
 
 
-uint64_t GetSysTimestamp_ns();
+uint64_t getSysTimestampNS();
 
-class RuntimeCounter{
-	static uint64_t start;
-	static uint64_t end;
-	static uint64_t all;
+class RuntimeCounter {
+	static uint64_t loopStartT;
+	static uint64_t loopAllT;
+	static uint64_t moduleStartT;
+	static uint64_t internalT;
+	static uint64_t internalStartT;
+	static std::string moduleNow;
+	static uint64_t loopCount;
+	static uint64_t loopPrintCounts;
+	static std::unordered_map<std::string, uint64_t> moduleTimes;
+	inline static void addModuleTime(const std::string &, uint64_t);
+	inline static void internalHead();
+	inline static void internalTail();
+
 
 public:
 	static void reset();
 	static void loopStart();
 	static void loopEnd();
 	static void printStatistics();
-	static void printStatistics(const std::string start, const std::string end);
-
+	static void moduleStart(const std::string&);
+	static void moduleEnd();
+	static void setPrintLoopNum(uint64_t);
+	
 };
 
 

@@ -68,9 +68,24 @@ RedisReImp::General::ThreadPool::~ThreadPool() {
 
 void RedisReImp::General::ThreadPool::enqueue(std::function<void()> task) {
     { 
+        General::RuntimeCounter::moduleStart("Lock");
         std::unique_lock<std::mutex> lock(queueMutex_); 
+        
         tasks_.emplace(std::move(task)); 
+        
     }
 
     cv_.notify_one(); 
+    General::RuntimeCounter::moduleStart("LockEnd");
+}
+
+void RedisReImp::General::ThreadPool::enqueue(std::vector<std::function<void()>> & tasks) {
+    { 
+        std::unique_lock<std::mutex> lock(queueMutex_); 
+        for (auto task:tasks) {
+            tasks_.emplace(std::move(task));
+        }
+    }
+    cv_.notify_one(); 
+    
 }
