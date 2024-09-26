@@ -88,12 +88,14 @@ void RedisReImp::NetCore::EpollServer::sBind() {
 }
 
 
+
 // True: next loop exists
 // False: loop should exit
 bool RedisReImp::NetCore::EpollServer::sEventLoop( 
-    std::function< RedisReImp::RESPSolver::RESPData (RedisReImp::RESPSolver::RESPData, std::string)> eventProcessFunc
+    std::function< RedisReImp::RESPSolver::RESPData (RedisReImp::RESPSolver::RESPData, std::string )> eventProcessFunc
 ) {
     int nevents = epoll_wait(epollFD, events.data(), epollEventsLen, -1);
+
     if (nevents == -1) {
         perror("epoll_wait()");
         return 1;
@@ -104,6 +106,10 @@ bool RedisReImp::NetCore::EpollServer::sEventLoop(
         
         if ((events[i].events & EPOLLERR) || (events[i].events & EPOLLHUP) ||
             (!(events[i].events & EPOLLIN))) {
+            
+            // 1100   获取第0位的状态
+            // 1100 & 0001 =
+
             int clientFD = events[i].data.fd;
             // if EPOLLHUP
             if ((events[i].events & EPOLLHUP)) {
@@ -129,6 +135,7 @@ bool RedisReImp::NetCore::EpollServer::sEventLoop(
                 struct sockaddr in_addr;
                 socklen_t in_addr_len = sizeof(in_addr);
                 int client = accept(serverFD, &in_addr, &in_addr_len);
+
                 //deleted std::cout << "eFD: "<< client << std::endl;
                 if (client == -1) {
                     if (errno == EAGAIN || errno == EWOULDBLOCK) {
@@ -142,8 +149,8 @@ bool RedisReImp::NetCore::EpollServer::sEventLoop(
                     set_nonblocking(client);
                     // disable nagle algorithm
                     set_nodelay(client);
+
                     event.data.fd = client;
-                    
                     event.events = EPOLLIN | EPOLLET | EPOLLOUT | EPOLLHUP;
                     if (epoll_ctl(epollFD, EPOLL_CTL_ADD, client, &event) == -1) {
                         perror("epoll_ctl()");
@@ -157,12 +164,14 @@ bool RedisReImp::NetCore::EpollServer::sEventLoop(
             //deleted std::cout << "eFD: "<< events[i].data.fd << std::endl;
             //deleted std::cout << "sFD: "<< serverFD << std::endl;
             std::shared_ptr<RedisReImp::General::BaseEvent> targetEvent;
+
             if (eventMapper.find(clientFD) == eventMapper.end()){
                 targetEvent = std::make_shared<RedisReImp::General::BaseEvent>(clientFD);
                 targetEvent->registerProcessFunction(eventProcessFunc);
+
                 eventMapper.emplace(
-                std::pair<int, std::shared_ptr<RedisReImp::General::BaseEvent>>(
-                    clientFD, targetEvent)
+                    std::pair<int, std::shared_ptr<RedisReImp::General::BaseEvent>>(
+                        clientFD, targetEvent)
                 );
             } else {
                 targetEvent = eventMapper[clientFD];

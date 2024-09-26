@@ -31,6 +31,7 @@ public:
     static RESPData checkData(std::string & strDataIn, int offset, int * resultStatus = nullptr, int* nextPartOffset = nullptr);
     
     std::shared_ptr<std::string> parseRESPString();
+    
     // getters and setters
     std::shared_ptr<std::string> getDataStr();
     const std::shared_ptr<std::vector<RESPData>> getDataVec();

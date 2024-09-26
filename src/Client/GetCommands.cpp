@@ -83,10 +83,10 @@ int main() {
     std::string address = "192.168.1.103";
     std::string portStr = "6379";
 
-    //deleted std::cout << "Input official Redis Server Adress: ";
+    std::cout << "Input official Redis Server Adress: ";
     std::cin >> address;
 
-    //deleted std::cout << "Input Port: ";
+    std::cout << "Input Port: ";
     std::cin >> portStr;
     int port = 6379;
     if (portStr.size() > 0) {

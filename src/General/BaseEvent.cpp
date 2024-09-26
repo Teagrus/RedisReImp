@@ -36,6 +36,7 @@ int RedisReImp::General::BaseEvent::eRead() {
     if (readDataRaw == nullptr) {
         readDataRaw = new char [bufferLen + 1];
     }
+    
     while (true)
     {
         ssize_t nbytes = read(clientFD, readDataRaw+readDataLen, sizeof(char) * bufferLen-readDataLen);
@@ -53,7 +54,6 @@ int RedisReImp::General::BaseEvent::eRead() {
                 readData = RESPSolver::RESPData::checkData(readDataString, 0, &resolveStatus, &nextPartOffset);
 
                 // //deleted std::cout << "Str Size " << readDataString.size() << "nextPartOffset "<< nextPartOffset;
-
                 if (resolveStatus == 0) {
                     //deleted std::cout << "Loaded Data: "<< *readData.parseRESPString() << std::endl;
 
@@ -131,6 +131,7 @@ int RedisReImp::General::BaseEvent::eReadDataParse() {
 int RedisReImp::General::BaseEvent::eDataProcess () {
 
     // For Registered function
+    
     responseData = registeredProcessFunction(readData, *(readData.getByIndex(0).getDataStr()));
 
     // auto command = readData.getDataVec()->at(0).getDataStr();
@@ -138,6 +139,10 @@ int RedisReImp::General::BaseEvent::eDataProcess () {
     stageNow+=1;
     return 1;
 }
+
+
+    
+
 
 void RedisReImp::General::BaseEvent::registerProcessFunction(
     std::function< RedisReImp::RESPSolver::RESPData (RedisReImp::RESPSolver::RESPData, std::string)> & func) {
@@ -207,7 +212,6 @@ bool RedisReImp::General::BaseEvent::triggerEvent() {
         eWriteDataParse();
         break;
     case 5:
-        
         eWrite();
         break;
     case 6:
