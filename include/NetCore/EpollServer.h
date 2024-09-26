@@ -1,11 +1,13 @@
 #pragma once
 
 #include<RedisReImpGeneral.h>
+#include<ThreadPool.h>
 #include<BaseEvent.h>
 #include<string>
 #include<vector>
 #include<map>
 #include<memory>
+#include<deque>
 
 #include <errno.h>
 #include <fcntl.h>
@@ -31,15 +33,24 @@ class EpollServer{
         int listenQueueLen = 10;
         int epollEventsLen = 100;
         int fdSize = 1000;
+        int ioWorkerThreadNum = 0;
 
         int serverFD = -1;
         int epollFD = -1;
 
         epoll_event event;
         std::vector<epoll_event> events;
+
         std::map<int, std::shared_ptr<RedisReImp::General::BaseEvent>> eventMapper;
+        std::mutex eventMapperMutex;
 
-
+        // for multi-threaded io
+        std::shared_ptr<General::ThreadPool> ioWorkerThreads;
+        std::shared_ptr<std::deque< std::shared_ptr< General::BaseEvent> >> readReadyEvents;
+        std::mutex readReadyMutex;
+        std::shared_ptr<std::deque< std::shared_ptr<General::BaseEvent> >> writeReadyEvents;
+        std::mutex writeReadyMutex;
+        
     public:
         EpollServer();
         ~EpollServer();

@@ -19,6 +19,10 @@ int main() {
     // init commands
     auto commandsMapper = Server::getCommandConfigs();
     Server::BaseExecutor baseExcutor;
+    
+    General::RuntimeCounter::reset();
+    General::RuntimeCounter::setPrintLoopNum(10000);
+    
     while (true)
     {
         serverObject.sEventLoop(
