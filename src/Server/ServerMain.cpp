@@ -9,12 +9,15 @@
 using namespace RedisReImp;
 int main() {
 
-    //deleted std::cout << "Server starting !!!" << std::endl;
+    std::cout << "Server starting !!!" << std::endl;
     const auto config = General::GlobalConfig::getInstance();
-    //deleted std::cout << "CONFIG port: " << config.port << std::endl;
+    std::cout << "CONFIG port: " << config.port << std::endl;
+
     NetCore::EpollServer serverObject;
     Server::CoreDataManager datamanager;
-    serverObject.sBind();
+
+    serverObject.sBind(); // listen 服务器端口 / 初始化epoll()
+
     // init commands
     auto commandsMapper = Server::getCommandConfigs();
     Server::BaseExecutor baseExcutor;

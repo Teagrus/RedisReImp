@@ -9,6 +9,11 @@
 namespace RedisReImp::Server {
 
 
+
+
+
+
+
 bool _commandConfigMapInited = false;
 std::unordered_map<std::string, RESPSolver::RESPData> _commandConfigMap;
 std::unordered_map<std::string, RESPSolver::RESPData>& getCommandConfigs() {
@@ -56,7 +61,7 @@ std::vector<std::string> commandList = {
     "DEL",
     "SET",
     "GET",
-    // "EXIST",
+    "EXISTS",
     // "GETSET",
     // "HGETALL",
     // "HKEYS",
@@ -64,6 +69,7 @@ std::vector<std::string> commandList = {
     // "HSET",
     // "HGET",
     // "HDEL",
+
     // "LPOP",
     // "LPUSH",
     // "LREM",
@@ -73,6 +79,7 @@ std::vector<std::string> commandList = {
     // "LLEN",
     // "LINDEX",
     // "LLEN"
+
 };
 
 // register clases
@@ -80,7 +87,7 @@ REGISTER_CLASS(ExecutorCOMMAND)
 REGISTER_CLASS(ExecutorDEL)
 REGISTER_CLASS(ExecutorSET)
 REGISTER_CLASS(ExecutorGET)
-// REGISTER_CLASS(ExecutorEXIST)
+REGISTER_CLASS(ExecutorEXISTS)
 // REGISTER_CLASS(ExecutorGETSET)
 // REGISTER_CLASS(ExecutorHGETALL)
 // REGISTER_CLASS(ExecutorHKEYS)
@@ -204,6 +211,23 @@ RESPSolver::RESPData ExecutorGET::execute(RESPSolver::RESPData & input, CoreData
     return result;
 }
 
+
+RESPSolver::RESPData ExecutorEXISTS::execute(RESPSolver::RESPData & input, CoreDataManager & coreData) {
+    RESPSolver::RESPData result(':');
+
+    int keyNums = input.getDataVecLen() - 1;
+    int count = 0;
+    for (int i = 0; i < keyNums; i++) {
+        auto keyName = input.getByIndex(i+1).getDataStr();
+        auto it = coreData.getStringMap().find(*keyName);
+        if (it != coreData.getStringMap().end()) {
+            count += 1;
+        }
+    }
+
+    result.setDataInt(count);
+    return result;
+}
 
 
 }

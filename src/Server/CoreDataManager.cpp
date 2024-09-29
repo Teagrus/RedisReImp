@@ -29,6 +29,7 @@ std::map<std::string, std::deque<std::string>>& CoreDataManager::getListMap() {
 }
 
 
+
 CoreDataManager CoreDataSingleton::coreData;
 void CoreDataSingleton::initCoreData() {
     ;

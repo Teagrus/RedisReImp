@@ -63,10 +63,11 @@ public:
     RESPSolver::RESPData execute(RESPSolver::RESPData &, CoreDataManager&);
 };
 
-class ExecutorEXIST:public BaseExecutor{
+class ExecutorEXISTS:public BaseExecutor{
 public:
     RESPSolver::RESPData execute(RESPSolver::RESPData &, CoreDataManager&);
 };
+
 
 class ExecutorGETSET:public BaseExecutor{
 public:
