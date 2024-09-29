@@ -2,6 +2,8 @@
 #include<RedisReImpGeneral.h>
 #include<EpollServer.h>
 #include<Executors.h>
+#include<variant>
+#include<DataObjects.h>
 
 
 using namespace RedisReImp;
@@ -20,6 +22,8 @@ int main() {
     General::RuntimeCounter::reset();
     General::RuntimeCounter::setPrintLoopNum(10000);
     
+    std::variant<int, double> a;
+
     while (true)
     {
         serverObject.sEventLoop(

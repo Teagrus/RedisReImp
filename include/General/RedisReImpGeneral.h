@@ -4,10 +4,18 @@
 #include <memory>
 #include <ini.h>
 #include <unordered_map>
-
+#include <variant>
+#include <ctime>
+#include <map>
+#include <deque>
+#include <time.h>
+#include <sys/time.h>
+#include <chrono>
+#include <KVInterface.h>
 // using alises
 using StrPtr = std::shared_ptr<std::string>;
 using StrVecPtr = std::shared_ptr< std::vector< std::shared_ptr<std::string> > >;
+using Timestamp = int64_t;
 
 // namespace
 namespace RedisReImp{
@@ -97,11 +105,15 @@ void toLower(std::string& targetStr);
 
 
 // This to count calculate process time
-#include <time.h>
-#include <sys/time.h>
 
 
 uint64_t getSysTimestampNS();
+inline Timestamp getTimestampNow() {
+	auto now = std::chrono::system_clock::now();
+    // 将时间点转换为时间戳（自 1970 年 1 月 1 日以来的秒数）
+    auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+	return timestamp;
+}
 
 class RuntimeCounter {
 	static uint64_t loopStartT;

@@ -53,7 +53,9 @@
         "typeinfo": "cpp",
         "cstring": "cpp",
         "cerrno": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "list": "cpp",
+        "variant": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
