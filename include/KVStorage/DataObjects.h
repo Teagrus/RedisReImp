@@ -9,9 +9,14 @@
 #include<RedisReImpGeneral.h>
 #include<KVInterface.h>
 #include<variant>
+// class RedisReImp::KVStorage::DataObject;
 
 using MapPtr = std::shared_ptr< RedisReImp::KVStorage::MapInterface >;
 using ListPtr = std::shared_ptr< RedisReImp::KVStorage::ListInterface >;
+
+
+
+
 
 namespace RedisReImp::KVStorage {
 
@@ -46,6 +51,7 @@ public:
     // }
 
     DataObject(std::variant<StrPtr, MapPtr, ListPtr> & data);
+    
 
     inline void setTimeExpire(Timestamp ts) {
         timeExpire = ts;
@@ -92,5 +98,11 @@ public:
     
 };
 
+};
 
+
+using DataObjectVecPtr = std::shared_ptr< std::vector<RedisReImp::KVStorage::DataObject> >;
+
+inline DataObjectVecPtr createDataObjectVecPtr() {
+	return std::make_shared< std::vector<RedisReImp::KVStorage::DataObject> >();
 };

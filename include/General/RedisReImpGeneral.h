@@ -3,6 +3,7 @@
 #include <functional>
 #include <memory>
 #include <ini.h>
+#include <vector>
 #include <unordered_map>
 #include <variant>
 #include <ctime>
@@ -16,6 +17,11 @@
 using StrPtr = std::shared_ptr<std::string>;
 using StrVecPtr = std::shared_ptr< std::vector< std::shared_ptr<std::string> > >;
 using Timestamp = int64_t;
+// allocate memory for StrVecPtr
+inline StrVecPtr createStrVecPtr() {
+	return std::make_shared< std::vector< std::shared_ptr<std::string>> >();
+};
+
 
 // namespace
 namespace RedisReImp{

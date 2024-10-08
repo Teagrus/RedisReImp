@@ -55,7 +55,8 @@
         "cerrno": "cpp",
         "map": "cpp",
         "list": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "cassert": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

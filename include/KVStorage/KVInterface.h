@@ -8,31 +8,34 @@
 
 namespace RedisReImp::KVStorage {
 class MapInterface {
+public:
     DataObject get(StrPtr);
     virtual int del(StrPtr);
     virtual void set(StrPtr key, DataObject& value);
     virtual void set(StrPtr key, DataObject& value, Timestamp expireT);
-    virtual bool exist(StrPtr key);
-    virtual bool exist(StrPtr key);
+    virtual int exist(StrPtr key);
     virtual StrVecPtr getKeys();
     virtual int getKeyNum();
 
     // served for innner implementation class
     virtual std::string getImplementationClassName();
 
+
     // served for deletion
     virtual ~MapInterface() = 0;
 };
 
 class ListInterface {
-    virtual void lpush(StrPtr value) = 0; // push left
-    virtual StrPtr lpop() = 0; // pop left
-    virtual void rpush(StrPtr value) = 0; // push right
-    virtual StrPtr rpop() = 0; // pop right
+public:
+    virtual void lpush(DataObject& value) = 0; // push left
+    virtual DataObject lpop() = 0; // pop left
+    virtual void rpush(DataObject& value) = 0; // push right
+    virtual DataObject rpop() = 0; // pop right
     virtual int len() = 0; // get list len
-    virtual StrPtr index(int index) = 0; // get index str in target list
-    virtual StrVecPtr getall() = 0;
-    virtual StrVecPtr getrange(int range0, int range1) = 0;
+    virtual DataObject index(int index) = 0; // get index str in target list
+    virtual DataObjectVecPtr getall() = 0;
+    virtual DataObjectVecPtr getrange(int range0, int range1) = 0;
+    virtual int clear() = 0;
     virtual ~ListInterface() = 0;
 };
 

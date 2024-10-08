@@ -1,6 +1,6 @@
 #pragma once
 #include<DataObjects.h>
-
+#include<RedisReImpGeneral.h>
 namespace RedisReImp::KVStorage {
 
 class STDMapContainer : MapInterface {
@@ -10,8 +10,8 @@ public:
     int del(StrPtr);
     void set(StrPtr key, DataObject& value);
     void set(StrPtr key, DataObject& value, Timestamp expireT);
-    bool exist(StrPtr key);
-    bool exist(StrPtr key);
+    int exist(StrPtr key);
+    int exist(StrPtr key);
     StrVecPtr getKeys();
     int getKeyNum();
 
@@ -21,4 +21,24 @@ public:
     // served for deletion
     ~STDMapContainer();
 };
+
+
+
+class STDListContainer : ListInterface {
+private:
+    std::deque<DataObject> container;
+public:
+    void lpush(DataObject& value);
+    DataObject lpop();
+    void rpush(DataObject& value); 
+    DataObject rpop();
+    int len();
+    DataObject index(int index);
+    DataObjectVecPtr getall();
+    DataObjectVecPtr getrange(int range0, int range1);
+    int clear();
+    ~STDListContainer();
+};
+
+
 }

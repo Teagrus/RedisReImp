@@ -1,5 +1,6 @@
 add_library(KVStorage STATIC)
-target_sources(KVStorage PRIVATE Containers.cpp)
+target_sources(KVStorage PRIVATE Containers.cpp DataObject.cpp)
+
 
 target_include_directories(KVStorage PUBLIC ${PROJECT_SOURCE_DIR}/include/KVStorage 
                              ${PROJECT_SOURCE_DIR}/include/General)
